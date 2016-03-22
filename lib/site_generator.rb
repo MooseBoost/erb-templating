@@ -23,10 +23,12 @@ class SiteGenerator
     Dir.mkdir '_site/movies' unless Dir.exists?('_site/movies')
     html = File.read('lib/templates/movie.html.erb')
     erb = ERB.new(html)
+    
     Movie.all.each do |movie|
-      fileHtml = File.new("_site/movies/#{movie.url}", "w+")
-      fileHtml.puts erb.result(binding)
-      fileHtml.close()
+      File.open("_site/movies/#{movie.url}", "w") do |file| 
+        file.write erb.result(binding)
+      end
     end  
   end
+  
 end
